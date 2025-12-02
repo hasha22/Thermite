@@ -79,6 +79,7 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                 }
             } else if (Objects.equals(ThermMod.config.temperatureDisplayType, "glass_thermometer")) {
 
+
                 int tx = 0;
                 int ty = 0;
                 float pixelMultiplier = 1.5f;
@@ -90,12 +91,21 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                 int height = 0;
                 boolean creative = false;
                 if (client != null) {
+                    // experimental
+                    int centerX = client.getWindow().getScaledWidth() / 2;
+                    int screenHeight = client.getWindow().getScaledHeight();
+
+                    x = centerX + 100 + ThermMod.config.temperatureXPos;
+                    y = screenHeight - 35 + ThermMod.config.temperatureYPos;
+                    tx = x;
+                    ty = y;
+                    /*
                     tx = (client.getWindow().getScaledWidth() / 2) + ThermMod.config.temperatureXPos;
                     ty = client.getWindow().getScaledHeight() + ThermMod.config.temperatureYPos;
 
                     x = (client.getWindow().getScaledWidth() / 2) + ThermMod.config.temperatureXPos;
                     y = (client.getWindow().getScaledHeight() - 48) + ThermMod.config.temperatureYPos;
-
+                    */
                     width = client.getWindow().getScaledWidth();
                     height = client.getWindow().getScaledHeight();
 
