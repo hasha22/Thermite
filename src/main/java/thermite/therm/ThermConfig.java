@@ -58,7 +58,7 @@ public class ThermConfig extends Config {
     public boolean temperatureDamageDecreasesSaturation = true;
 
     @ConfigEntry(comment = "When enabled, being cold enough causes a blue outline effect. And being hot enough causes an orange one. (Default: true)")
-    public boolean enableTemperatureVignette = true;
+    public boolean enableTemperatureVignette = false;
 
     @ConfigEntry(comment = "When enabled, particles will spawn showing the direction that the wind is flowing. More wind = more particles. (Default: true)")
     public boolean enableWindParticles = true;

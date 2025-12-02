@@ -31,7 +31,7 @@ public class InGameHudMixin {
                 float b = 0;
                 float a = 0;
                 boolean extreme = false;
-
+/*
                 if (ThermClient.clientStoredTemperature < 41 && ThermClient.clientStoredTemperature > 35) {
                     r = 0.25f;
                     g = 0.5f;
@@ -78,6 +78,7 @@ public class InGameHudMixin {
                 RenderSystem.enableDepthTest();
                 context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.defaultBlendFunc();
+            }*/
             }
         }
     }
