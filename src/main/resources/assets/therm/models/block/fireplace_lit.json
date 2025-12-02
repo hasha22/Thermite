@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "front": "therm:block/fireplace_front_lit",
+    "side": "therm:block/fireplace_blank",
+    "top": "therm:block/fireplace_top",
+    "bottom": "therm:block/fireplace_blank"
+  }
+}

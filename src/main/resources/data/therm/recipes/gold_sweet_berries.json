@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BG ",
+    "GG ",
+    "   "
+  ],
+  "key": {
+
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "B": {
+      "item": "minecraft:sweet_berries"
+    }
+
+  },
+  "result": {
+
+    "item": "therm:gold_sweet_berries",
+    "count": 1
+
+  }
+}
