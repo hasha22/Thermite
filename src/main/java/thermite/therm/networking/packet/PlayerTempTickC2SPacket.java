@@ -12,6 +12,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -230,6 +231,11 @@ public class PlayerTempTickC2SPacket {
                 }
             });
         */
+
+        player.sendMessage(
+                Text.literal("Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
+                true // action bar
+        );
 
         //wind and fireplaces
         if (playerState.searchFireplaceTick <= 0) {
