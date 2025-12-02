@@ -231,12 +231,12 @@ public class PlayerTempTickC2SPacket {
                 }
             });
         */
-
+/*
         player.sendMessage(
                 Text.literal("Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
                 true // action bar
         );
-
+*/
         //wind and fireplaces
         if (playerState.searchFireplaceTick <= 0) {
             playerState.searchFireplaceTick = 4;
