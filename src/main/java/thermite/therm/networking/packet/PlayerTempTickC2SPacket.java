@@ -31,6 +31,7 @@ import thermite.therm.networking.ThermNetworkingPackets;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class PlayerTempTickC2SPacket {
@@ -138,8 +139,41 @@ public class PlayerTempTickC2SPacket {
         });
 
         Vec3d pos = player.getPos();
+
+        //UPDATE - removed stacking heat, changed to find the single strongest heating block in range and apply only that
+
+        //double strongestHeat = 0.0;
+        final AtomicReference<Double>[] strongestHeat = new AtomicReference[]{new AtomicReference<>(0.0)};
+
         Stream<BlockState> heatBlockBox = player.getWorld().getStatesInBox(Box.of(pos, 4, 4, 4));
-        heatBlockBox.forEach((state) -> {
+
+        heatBlockBox.forEach((state) ->
+        {
+            for (var entry : ThermMod.config.heatingBlocks.entrySet()) {
+                String key = entry.getKey();
+                double value = entry.getValue();
+
+                if (Objects.equals(state.toString(), key))
+                {
+                    if (state.isOf(Blocks.CAMPFIRE) || state.isOf(Blocks.SOUL_CAMPFIRE))
+                    {
+                        if (state.get(CampfireBlock.LIT))
+                        {
+                            if (value > strongestHeat[0].get()) strongestHeat[0].set(value);
+                        }
+                    }
+                    else
+                    {
+                        if (value > strongestHeat[0].get()) strongestHeat[0].set(value);
+                    }
+                } else if (Objects.equals(state.getBlock().toString(), key) && !Objects.equals(state.toString(), state.getBlock().toString())) {
+                    if (value > strongestHeat[0].get()) strongestHeat[0].set(value);
+                }
+            }
+        });
+        playerState.restingTemp += strongestHeat[0].get();
+
+        /* OLD CODE
             ThermMod.config.heatingBlocks.forEach((b, t) -> {
                 if (Objects.equals(state.toString(), b)) {
                     if (state.isOf(Blocks.CAMPFIRE) || state.isOf(Blocks.SOUL_CAMPFIRE)) { //hard code to keep unlit campfires from heating.
@@ -153,10 +187,37 @@ public class PlayerTempTickC2SPacket {
                     playerState.restingTemp += t;
                 }
             });
+        */
 
-        });
+        final AtomicReference<Double>[] strongestCold = new AtomicReference[]{new AtomicReference<>(0.0)};
         Stream<BlockState> coldBlockBox = player.getWorld().getStatesInBox(Box.of(pos, 2, 3, 2));
-        coldBlockBox.forEach((state) -> {
+
+        coldBlockBox.forEach((state) ->
+        {
+            for (var entry : ThermMod.config.coolingBlocks.entrySet())
+            {
+                String key = entry.getKey();
+                double value = entry.getValue();
+
+                if (Objects.equals(state.toString(), key))
+                {
+                    if (armorHeat.get() < 2)
+                    {
+                        if (value > strongestCold[0].get()) strongestCold[0].set(value);
+                    }
+                }
+                else if (Objects.equals(state.getBlock().toString(), key) && !Objects.equals(state.toString(), state.getBlock().toString()))
+                {
+                    if (armorHeat.get() < 2)
+                    {
+                        if (value > strongestCold[0].get()) strongestCold[0].set(value);
+                    }
+                }
+            }
+        });
+        playerState.restingTemp -= strongestCold[0].get();
+
+        /* OLD CODE
             ThermMod.config.coolingBlocks.forEach((b, t) -> {
                 if (Objects.equals(state.toString(), b)) {
                     if (armorHeat.get() < 2) {
@@ -168,7 +229,7 @@ public class PlayerTempTickC2SPacket {
                     }
                 }
             });
-        });
+        */
 
         //wind and fireplaces
         if (playerState.searchFireplaceTick <= 0) {
