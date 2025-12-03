@@ -231,7 +231,7 @@ public class PlayerTempTickC2SPacket {
                 }
             });
         */
-/*
+        /*
         player.sendMessage(
                 Text.literal("Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
                 true // action bar

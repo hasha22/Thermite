@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.hud.InGameOverlayRenderer;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.item.ItemStack;
@@ -91,21 +92,34 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                 int height = 0;
                 boolean creative = false;
                 if (client != null) {
-                    // experimental
-                    int centerX = client.getWindow().getScaledWidth() / 2;
-                    int screenHeight = client.getWindow().getScaledHeight();
 
-                    x = centerX + 100 + ThermMod.config.temperatureXPos;
-                    y = screenHeight - 35 + ThermMod.config.temperatureYPos;
-                    tx = x;
-                    ty = y;
-                    /*
+//                    InGameHud hud = client.inGameHud;
+//                    int screenHeight = client.getWindow().getScaledHeight();
+//                    int expBarHeight = 3; // default extra padding above hotbar
+//                    if (client.player != null && client.player.experienceLevel > 0) {
+//                        expBarHeight += 10; // experience level number adds height
+//                    }
+//                    int yPos = screenHeight - expBarHeight;
+//                    int screenWidth = client.getWindow().getScaledWidth();
+//                    int xPos = screenWidth / 2 + 182 / 2;
+///*
+//                    int centerX = client.getWindow().getScaledWidth() / 2;
+//                    int screenHeight = client.getWindow().getScaledHeight();
+//*/
+//                    x = screenWidth / 2 + 182 / 2 + ThermMod.config.temperatureXPos;
+//                    y = yPos + ThermMod.config.temperatureYPos;
+//
+//                    tx = x;
+//                    ty = y;
+
+
                     tx = (client.getWindow().getScaledWidth() / 2) + ThermMod.config.temperatureXPos;
                     ty = client.getWindow().getScaledHeight() + ThermMod.config.temperatureYPos;
 
                     x = (client.getWindow().getScaledWidth() / 2) + ThermMod.config.temperatureXPos;
                     y = (client.getWindow().getScaledHeight() - 48) + ThermMod.config.temperatureYPos;
-                    */
+
+
                     width = client.getWindow().getScaledWidth();
                     height = client.getWindow().getScaledHeight();
 
