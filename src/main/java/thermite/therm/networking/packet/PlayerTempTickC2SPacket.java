@@ -130,6 +130,30 @@ public class PlayerTempTickC2SPacket {
                 armorHeat.addAndGet(t + player.getInventory().getArmorStack(3).getNbt().getInt("wool"));
             }
         });
+
+        //UPDATE - if a heat source is held in both the main hand and offhand, it only applies the highest heat value
+
+        double heldHeat = 0;
+
+        for (var entry : ThermMod.config.heldTempItems.entrySet())
+        {
+            String key = entry.getKey();
+            double value = entry.getValue();
+
+            boolean mainMatch = Objects.equals(player.getInventory().getMainHandStack().getItem().toString(), key);
+            boolean offMatch  = Objects.equals(player.getInventory().offHand.get(0).getItem().toString(), key);
+
+            if (mainMatch || offMatch)
+            {
+                if (value > heldHeat)
+                {
+                    heldHeat = value;
+                }
+            }
+        }
+        playerState.restingTemp += heldHeat;
+
+        /* OLD CODE
         ThermMod.config.heldTempItems.forEach((it, t) -> {
             if (Objects.equals(player.getInventory().getMainHandStack().getItem().toString(), it)) {
                 playerState.restingTemp += t;
@@ -138,12 +162,12 @@ public class PlayerTempTickC2SPacket {
                 playerState.restingTemp += t;
             }
         });
+        */
 
         Vec3d pos = player.getPos();
 
         //UPDATE - removed stacking heat, changed to find the single strongest heating block in range and apply only that
 
-        //double strongestHeat = 0.0;
         final AtomicReference<Double>[] strongestHeat = new AtomicReference[]{new AtomicReference<>(0.0)};
 
         Stream<BlockState> heatBlockBox = player.getWorld().getStatesInBox(Box.of(pos, 4, 4, 4));
@@ -231,12 +255,12 @@ public class PlayerTempTickC2SPacket {
                 }
             });
         */
-        /*
+
         player.sendMessage(
                 Text.literal("Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
                 true // action bar
         );
-*/
+
         //wind and fireplaces
         if (playerState.searchFireplaceTick <= 0) {
             playerState.searchFireplaceTick = 4;
