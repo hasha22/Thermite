@@ -7,35 +7,8 @@ import me.lortseam.completeconfig.data.ConfigOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ThermConfig extends Config {
-
-    //seasons
-    @ConfigEntry(comment = "(Experimental) A small built in season system that affects your temperature depending on the season. You can configure the length of each season in half seconds, (one minecraft day = 2400 half seconds).")
-    public boolean enableSeasonSystem = false;
-
-    @ConfigEntry(comment = "Length of spring (Default: 48000 half seconds = 20 days).")
-    public long springSeasonLength = 48000;
-
-    @ConfigEntry(comment = "Length of summer (Default 48000 half seconds = 20 days).")
-    public long summerSeasonLength = 48000;
-
-    @ConfigEntry(comment = "Length of fall (Default 48000 half seconds = 20 days).")
-    public long fallSeasonLength = 48000;
-
-    @ConfigEntry(comment = "Length of winter (Default 48000 half seconds = 20 days).")
-    public long winterSeasonLength = 48000;
-
-    @ConfigEntry(comment = "This option doesn't work yet.")
-    public String startingSeason = "spring";
-
-    @ConfigEntry(comment = "Multiplier for how much seasons affect your temperature.")
-    public float seasonTemperatureExtremenessMultiplier = 1.0f;
-
-
-    //weather
-    @ConfigEntry(comment = "(Experimental) Makes weather reflect the current season. If you enable this make sure to run (/gamerule doWeatherCycle false) to disable the vanilla weather cycle.")
-    public boolean seasonalWeather = false;
-
+public class ThermConfig extends Config
+{
     //UPDATE - Added variables to make certain temperature modifiers easily configurable.
     @ConfigEntry(comment = "Variable for adjusting fireplace heat. Default 14. Increasing it will make it hotter.")
     public int fireplaceTempModifier = 14;
@@ -56,18 +29,14 @@ public class ThermConfig extends Config {
     @ConfigEntry(comment = "Variable for adjusting water modifier. Default 10. Increasing it will make it colder")
     public int waterTempModifier = 10;
 
-    //UPDATE - added variables for crop temperature configuration
-    @ConfigEntry (comment = "Variable for adjusting minimum temperature required for crop growth. Higher means more heat is required. Default 6")
-    public int cropMinTempThreshold = 6;
-    @ConfigEntry (comment = "Variable for adjusting crop heat radius for fireplaces, specifically. Default 20.")
-    public int cropFireplaceHeatRadius = 20;
-    @ConfigEntry (comment = "Variable for adjusting crop heat radius for all other sources. Default 5")
-    public int cropUniversalHeatRadius = 5;
-    @ConfigEntry(comment = "Variable for adjusting fireplace heat added to crops. Higher means more heat")
-    public int cropFireplaceHeatModifier = 12;
+    //Update - added option to control how often temperature checks occur
+    @ConfigEntry(comment = "Variable for controlling how often the mod checks for temperature. Measured in ticks. 20 ticks = 1 second. Default 20")
+    public int tempTickCount = 20;
 
+    //Update - added boolean option to enable/disable temperature debug.
+    @ConfigEntry(comment = "Variable to enable/disable debug log. Set to true to enable. Default false.")
+    public boolean enableTemperatureDebug = false;
 
-    //gui i don't even remember if this stuff works
     @ConfigEntry(comment = "X coordinate of temperature UI relative to its default position. (Default: 0)")
     public int temperatureXPos = 0;
 
@@ -83,7 +52,6 @@ public class ThermConfig extends Config {
     @ConfigEntry(comment = "Different styles for the temperature display. (options: gauge, glass_thermometer)")
     public String temperatureDisplayType = "glass_thermometer";
 
-    //TODO: Potentially make it also reduce your entire healing intake by a percentage.
     @ConfigEntry(comment = "Whether or not temperature damage decreases your saturation. Beware disabling this makes it really easy to bypass temperature damage just by eating. (Default: true)")
     public boolean temperatureDamageDecreasesSaturation = true;
 
@@ -118,8 +86,6 @@ public class ThermConfig extends Config {
 
     @ConfigEntry(comment = "Items that when held will change your temperature.")
     public Map<String, Integer> heldTempItems = new HashMap(Map.of("torch", 3, "lava_bucket", 3));
-
-    //public Map<String, Integer> heatingBlocks = new HashMap(Map.of("Block{minecraft:torch}", 3, "Block{minecraft:fire}", 3, "Block{minecraft:lava}", 8, "Block{minecraft:campfire}", 15, "Block{minecraft:wall_torch}", 3, "Block{minecraft:soul_torch}", 3, "Block{minecraft:soul_wall_torch}", 3, "Block{minecraft:soul_campfire}", 15, "Block{minecraft:lava_cauldron}", 8, "Block{minecraft:furnace}[facing=north,lit=true]", 3, "Block{minecraft:furnace}[facing=east,lit=true]", 3, "Block{minecraft:furnace}[facing=south,lit=true]", 3, "Block{minecraft:furnace}[facing=west,lit=true]", 3));
 
     @ConfigEntry(comment = "Blocks that will heat you up when near.")
     public Map<String, Integer> heatingBlocks = new HashMap(Map.ofEntries(
@@ -185,7 +151,7 @@ public class ThermConfig extends Config {
     public int temperatureDamageInterval = 3;
 
     @ConfigEntry(comment = "Damage interval for extreme hypothermia and hyperthermia in seconds (Default: 2)")
-    public int extremetemperatureDamageInterval = 2;
+    public int extremeTemperatureDamageInterval = 2;
 
     @ConfigEntry(comment = "Duration of the cooling effect of ice juice in ticks. (Default: 9600)")
     public int iceJuiceEffectDuration = 9600;

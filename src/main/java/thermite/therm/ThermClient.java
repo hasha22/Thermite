@@ -32,7 +32,7 @@ public class ThermClient implements ClientModInitializer {
     public static boolean windParticles = false;
 
     public static int tempTickCounter = 0;
-    public static final int tempTickCount = 60;
+    public static final int tempTickCount = 20;
 
     public static boolean showGui = true;
     private static KeyBinding showGuiKey;
