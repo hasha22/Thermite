@@ -32,7 +32,7 @@ public class ThermClient implements ClientModInitializer {
     public static boolean windParticles = false;
 
     public static int tempTickCounter = 0;
-    public static final int tempTickCount = 20;
+    public static final int tempTickCount = 60;
 
     public static boolean showGui = true;
     private static KeyBinding showGuiKey;
@@ -58,20 +58,23 @@ public class ThermClient implements ClientModInitializer {
         HudRenderCallback.EVENT.register(new TemperatureHudOverlay());
 
         //tick
-        ClientTickEvents.START_CLIENT_TICK.register((client) -> {
+        ClientTickEvents.START_CLIENT_TICK.register((client) ->
+        {
             if (client.world != null) {
                 if (client.world.isClient()) {
 
-                    if (tempTickCounter < tempTickCount) {
-                        tempTickCounter += 1;
-                    } else if (tempTickCounter >= tempTickCount) {
+                    if (tempTickCounter < tempTickCount)
+                    {
+                        tempTickCounter ++;
+                    }
+                    else if (tempTickCounter > tempTickCount)
+                    {
                         boolean paused = false;
                         if (client.isInSingleplayer() && client.isPaused()) {
                             paused = true;
                             windParticles = false;
                         }
                         if (!paused && !client.player.isCreative() && !client.player.isSpectator()) {
-                            ClientPlayNetworking.send(ThermNetworkingPackets.PLAYER_TEMP_TICK_C2S_PACKET_ID, PacketByteBufs.create());
                             windParticles = true;
                         }
                         tempTickCounter = 0;
