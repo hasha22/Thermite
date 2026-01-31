@@ -36,6 +36,36 @@ public class ThermConfig extends Config {
     @ConfigEntry(comment = "(Experimental) Makes weather reflect the current season. If you enable this make sure to run (/gamerule doWeatherCycle false) to disable the vanilla weather cycle.")
     public boolean seasonalWeather = false;
 
+    //UPDATE - Added variables to make certain temperature modifiers easily configurable.
+    @ConfigEntry(comment = "Variable for adjusting fireplace heat. Default 14. Increasing it will make it hotter.")
+    public int fireplaceTempModifier = 14;
+    @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the frigid climate. Increasing it will make it colder.")
+    public float nightFrigidTempModifier = 12;
+    @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the cold climate. Increasing it will make it colder.")
+    public float nightColdTempModifier = 10;
+    @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the temperate climate. Increasing it will make it colder.")
+    public float nightTemperateTempModifier = 8;
+    @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the hot climate. Increasing it will make it colder.")
+    public float nightHotTempModifier = 6;
+    @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the arid climate. Increasing it will make it colder.")
+    public float nightAridTempModifier = 14;
+    @ConfigEntry(comment = "Variable for adjusting rain modifier. Default 8. Increasing it will make it colder.")
+    public int rainTempModifier = 8;
+    @ConfigEntry(comment = "Variable for adjusting snow modifier. Default 8. Increasing it will make it colder")
+    public int snowTempModifier = 8;
+    @ConfigEntry(comment = "Variable for adjusting water modifier. Default 10. Increasing it will make it colder")
+    public int waterTempModifier = 10;
+
+    //UPDATE - added variables for crop temperature configuration
+    @ConfigEntry (comment = "Variable for adjusting minimum temperature required for crop growth. Higher means more heat is required. Default 6")
+    public int cropMinTempThreshold = 6;
+    @ConfigEntry (comment = "Variable for adjusting crop heat radius for fireplaces, specifically. Default 20.")
+    public int cropFireplaceHeatRadius = 20;
+    @ConfigEntry (comment = "Variable for adjusting crop heat radius for all other sources. Default 5")
+    public int cropUniversalHeatRadius = 5;
+    @ConfigEntry(comment = "Variable for adjusting fireplace heat added to crops. Higher means more heat")
+    public int cropFireplaceHeatModifier = 12;
+
 
     //gui i don't even remember if this stuff works
     @ConfigEntry(comment = "X coordinate of temperature UI relative to its default position. (Default: 0)")

@@ -65,6 +65,12 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.release = 17
 }
 
+tasks.jar {
+    archiveBaseName.set("thermiteHashaPatch")
+    archiveVersion.set("2.1.0")
+    archiveClassifier.set("") // optional
+}
+
 java {
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 	// if it is present.

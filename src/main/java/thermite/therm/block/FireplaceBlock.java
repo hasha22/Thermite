@@ -65,14 +65,19 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
             blockEntity.markDirty();
             stack.setCount(stack.getCount() - 1);
             world.playSound(null, pos, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 0.25f, 0.5f);
-        } else if (stack.getItem() == Items.COAL_BLOCK) {
+        }
+        /* UPDATE - Removed coal blocks from being used as fuel
+        else if (stack.getItem() == Items.COAL_BLOCK)
+        {
             world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
             blockEntity.setTime(blockEntity.getTime() + 10800);
             blockEntity.markDirty();
             stack.setCount(stack.getCount() - 1);
             world.playSound(null, pos, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 0.25f, 0.5f);
-        } else if (stack.getItem() == Items.STICK) {
+        }
+        */
+        else if (stack.getItem() == Items.STICK) {
             world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
             blockEntity.setTime(blockEntity.getTime() + 100);

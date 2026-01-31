@@ -2,10 +2,14 @@ package thermite.therm;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import thermite.therm.block.FireplaceBlock;
+import thermite.therm.block.ThermBlocks;
 import thermite.therm.util.BlockStatePosPair;
+import net.minecraft.util.math.random.Random;
 
 import java.util.ArrayList;
 

@@ -58,34 +58,34 @@ public class PlayerTempTickC2SPacket {
             playerState.minTemp = 0;
             playerState.maxTemp = 80;
             playerState.restingTemp = ThermMod.config.frigidClimateTemp;
-            nightRTemp = -10;
+            nightRTemp = 12;
         } else if (Objects.equals(climate, "cold")) {
             playerState.minTemp = 0;
             playerState.maxTemp = 100;
             playerState.restingTemp = ThermMod.config.coldClimateTemp;
-            nightRTemp = -10;
+            nightRTemp = 10;
         } else if (Objects.equals(climate, "temperate")) {
             playerState.minTemp = 0;
             playerState.maxTemp = 100;
             playerState.restingTemp = ThermMod.config.temperateClimateTemp;
-            nightRTemp = -10;
+            nightRTemp = 8;
         } else if (Objects.equals(climate, "hot")) {
             playerState.minTemp = 40;
             playerState.maxTemp = 120;
             playerState.restingTemp = ThermMod.config.hotClimateTemp;
-            nightRTemp = -8;
+            nightRTemp = 6;
         } else if (Objects.equals(climate, "arid")) {
             playerState.minTemp = 40;
             playerState.maxTemp = 120;
             playerState.restingTemp = ThermMod.config.aridClimateTemp;
-            nightRTemp = -15;
+            nightRTemp = 14;
         }
 
         DimensionType dim = player.getWorld().getDimension();
 
         if (dim.natural()) {
             if (!player.getWorld().isDay()) { //its nighttime in overworld so make colder
-                playerState.restingTemp += nightRTemp;
+                playerState.restingTemp -= nightRTemp;
             }
         }
 
@@ -255,17 +255,18 @@ public class PlayerTempTickC2SPacket {
                 }
             });
         */
-
+        /*
         player.sendMessage(
                 Text.literal("Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
-                true // action bar
+                true
         );
-
+        */
         //wind and fireplaces
-        if (playerState.searchFireplaceTick <= 0) {
-            playerState.searchFireplaceTick = 4;
+        if (playerState.searchFireplaceTick <= 0)
+        {
+            playerState.searchFireplaceTick = 20;
             AtomicInteger fireplaces = new AtomicInteger();
-            Stream<BlockState> fireplaceBox = player.getWorld().getStatesInBox(Box.of(pos, 12, 12, 12));
+            Stream<BlockState> fireplaceBox = player.getWorld().getStatesInBox(Box.of(pos, 80, 80, 80));
             fireplaceBox.forEach((state) -> {
                 if (state.isOf(ThermBlocks.FIREPLACE_BLOCK)) {
                     if (state.get(FireplaceBlock.LIT)) {
@@ -275,7 +276,12 @@ public class PlayerTempTickC2SPacket {
             });
             playerState.fireplaces = fireplaces.get();
 
-
+            /*
+            ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
+                    + " restingTemp=" + playerState.restingTemp
+                    + " temp=" + playerState.temp
+                    + " windTemp=" + playerState.windTemp);
+            */
             //wind
             if (ThermMod.config.enableWind) {
                 if (ThermMod.config.multidimensionalWind || dim.natural()) {
@@ -332,7 +338,6 @@ public class PlayerTempTickC2SPacket {
                 }
             }
         }
-        playerState.restingTemp += (playerState.fireplaces * 14);
         playerState.restingTemp += playerState.windTemp;
         playerState.searchFireplaceTick -= 1;
 
@@ -352,11 +357,11 @@ public class PlayerTempTickC2SPacket {
         //playerState.restingTemp -= (fireProt * ThermMod.config.fireProtectionCoolingMultiplier);
 
         player.getStatusEffects().forEach((i) -> {
-            if (i.getTranslationKey() == ThermStatusEffects.COOLING.getTranslationKey()) {
+            if (i.getTranslationKey().equals(ThermStatusEffects.COOLING.getTranslationKey())) {
                 playerState.restingTemp -= (10 + (10 * i.getAmplifier()));
             }
         });
-
+        playerState.restingTemp += (playerState.fireplaces * 14);
         short tempDir = (short)(playerState.restingTemp - playerState.temp);
 
         if (Math.round(playerState.restingTemp) > Math.round(playerState.temp)) { //TODO fix temprate
