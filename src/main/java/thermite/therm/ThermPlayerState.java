@@ -5,6 +5,7 @@ public class ThermPlayerState {
     public int testplayerint = 440;
 
     public double temp = 50;
+    public double baseTemp = 50;
     public double tempRate = 0.0625;
     public double restingTemp = 404;
     public double minTemp = -400;

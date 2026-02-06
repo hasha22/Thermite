@@ -1,17 +1,21 @@
 package thermite.therm;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.biome.Biome;
@@ -19,6 +23,7 @@ import net.minecraft.world.dimension.DimensionType;
 import thermite.therm.block.FireplaceBlock;
 import thermite.therm.block.ThermBlocks;
 import thermite.therm.effect.ThermStatusEffects;
+import thermite.therm.networking.ThermNetworkingPackets;
 
 import java.util.Objects;
 import java.util.Random;
@@ -37,7 +42,6 @@ public class EventListeners {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
         {
             ServerState serverState = ServerState.getServerState(Objects.requireNonNull(handler.player.getWorld().getServer()));
-            ThermPlayerState playerState = ServerState.getPlayerState(handler.player);
 
             if (!Objects.equals(serverState.worldVersion, modVersion))
             {
@@ -78,7 +82,6 @@ public class EventListeners {
 
             server.getPlayerManager().getPlayerList().forEach((player) ->
             {
-
                 if (!player.isSpectator() && !player.isCreative())
                 {
                     //Calls Temp Tick Logic
@@ -101,6 +104,8 @@ public class EventListeners {
         tempTickCounter = 0;
 
         float temp = player.getWorld().getBiome(player.getBlockPos()).value().getTemperature();
+        short tempDir = (short) (playerState.restingTemp - playerState.temp);
+
         String climate = ThermUtil.getClimate(temp);
 
         float nightRTemp = 0;
@@ -452,6 +457,22 @@ public class EventListeners {
             playerState.damageTick = 0;
         }
         serverState.markDirty();
+        sentTemperatureSync(player, playerState, serverState, tempDir);
 
+    }
+    private static void sentTemperatureSync(ServerPlayerEntity player, ThermPlayerState state, ServerState serverState, short dir)
+    {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeDouble(state.temp);
+        buf.writeShort(dir);
+        buf.writeDouble(serverState.windPitch);
+        buf.writeDouble(serverState.windYaw);
+        buf.writeDouble(state.windTemp);
+
+        ServerPlayNetworking.send(
+                player,
+                ThermNetworkingPackets.SEND_THERMPLAYERSTATE_S2C_PACKET_ID,
+                buf
+        );
     }
 }

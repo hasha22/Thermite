@@ -43,8 +43,11 @@ public class TemperatureHudOverlay implements HudRenderCallback {
 
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {
-        if (ThermClient.showGui) {
-            if (Objects.equals(ThermMod.config.temperatureDisplayType, "gauge")) {
+        if (ThermClient.showGui)
+        {
+            //Unused
+            if (Objects.equals(ThermMod.config.temperatureDisplayType, "gauge_thermometer"))
+            {
                 int x = 0;
                 int y = 0;
                 ItemStack offHand = ItemStack.EMPTY;
@@ -78,9 +81,10 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                     assert client != null;
                     drawContext.drawText(client.textRenderer, "§7" + ThermClient.clientStoredTemperature, ((x - (x - 16)) + 6) + ThermMod.config.thermometerXPos, (frameY + 7) + ThermMod.config.thermometerYPos,16777215, true);
                 }
-            } else if (Objects.equals(ThermMod.config.temperatureDisplayType, "glass_thermometer")) {
-
-
+            }
+            //Used version
+            else if (Objects.equals(ThermMod.config.temperatureDisplayType, "glass_thermometer"))
+            {
                 int tx = 0;
                 int ty = 0;
                 float pixelMultiplier = 1.5f;
@@ -91,28 +95,8 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                 int width = 0;
                 int height = 0;
                 boolean creative = false;
-                if (client != null) {
-
-//                    InGameHud hud = client.inGameHud;
-//                    int screenHeight = client.getWindow().getScaledHeight();
-//                    int expBarHeight = 3; // default extra padding above hotbar
-//                    if (client.player != null && client.player.experienceLevel > 0) {
-//                        expBarHeight += 10; // experience level number adds height
-//                    }
-//                    int yPos = screenHeight - expBarHeight;
-//                    int screenWidth = client.getWindow().getScaledWidth();
-//                    int xPos = screenWidth / 2 + 182 / 2;
-///*
-//                    int centerX = client.getWindow().getScaledWidth() / 2;
-//                    int screenHeight = client.getWindow().getScaledHeight();
-//*/
-//                    x = screenWidth / 2 + 182 / 2 + ThermMod.config.temperatureXPos;
-//                    y = yPos + ThermMod.config.temperatureYPos;
-//
-//                    tx = x;
-//                    ty = y;
-
-
+                if (client != null)
+                {
                     tx = (client.getWindow().getScaledWidth() / 2) + ThermMod.config.temperatureXPos;
                     ty = client.getWindow().getScaledHeight() + ThermMod.config.temperatureYPos;
 
@@ -130,8 +114,10 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                 int temp = (int) ThermClient.clientStoredTemperature;
 
                 assert client != null;
-                if (!client.player.isSpectator() && !client.player.isCreative()) {
-                    if (temp < ThermMod.config.freezeThreshold1 + 1 && temp > ThermMod.config.freezeThreshold2) {
+                if (!client.player.isSpectator() && !client.player.isCreative())
+                {
+                    if (temp < ThermMod.config.freezeThreshold1 + 1 && temp > ThermMod.config.freezeThreshold2)
+                    {
                         ThermClient.glassShakeTickMax = 4;
                         ThermClient.glassShakeAxis = true;
                     } else if (temp < ThermMod.config.freezeThreshold2 + 1) {
@@ -146,7 +132,8 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                     } else {
                         ThermClient.glassShakeTickMax = 0;
                     }
-                    if (ThermClient.glassShakeTickMax != 0) {
+                    if (ThermClient.glassShakeTickMax != 0)
+                    {
                         ThermClient.glassShakeTick += 1;
                         if (ThermClient.glassShakeTick >= ThermClient.glassShakeTickMax) {
                             ThermClient.glassShakeTick = 0;
@@ -163,7 +150,8 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                         }
                     }
 
-                    if (temp < ThermMod.config.burnThreshold1 - 10 && temp > ThermMod.config.freezeThreshold1 + 10) {
+                    if (temp < ThermMod.config.burnThreshold1 - 10 && temp > ThermMod.config.freezeThreshold1 + 10)
+                    {
                         drawContext.drawTexture(TEMPERATE_GLASS, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
                     } else if (temp < ThermMod.config.freezeThreshold1 + 11 && temp > ThermMod.config.freezeThreshold1 + 5) {
                         drawContext.drawTexture(COLD_GLASS, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
@@ -175,13 +163,20 @@ public class TemperatureHudOverlay implements HudRenderCallback {
                         drawContext.drawTexture(BLAZING_GLASS, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
                     }
 
-                    if (ThermClient.clientStoredTempDir < 0 && ThermClient.clientStoredTempDir > -10) {
+                    if (ThermClient.clientStoredTempDir < 0 && ThermClient.clientStoredTempDir > -10)
+                    {
                         drawContext.drawTexture(COOLING_OUTLINE_SMALL, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
-                    } else if (ThermClient.clientStoredTempDir < -9) {
+                    }
+                    else if (ThermClient.clientStoredTempDir < -9)
+                    {
                         drawContext.drawTexture(COOLING_OUTLINE, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
-                    } else if (ThermClient.clientStoredTempDir > 0 && ThermClient.clientStoredTempDir < 10) {
+                    }
+                    else if (ThermClient.clientStoredTempDir > 0 && ThermClient.clientStoredTempDir < 10)
+                    {
                         drawContext.drawTexture(HEATING_OUTLINE_SMALL, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
-                    } else if (ThermClient.clientStoredTempDir > 9) {
+                    }
+                    else if (ThermClient.clientStoredTempDir > 9)
+                    {
                         drawContext.drawTexture(HEATING_OUTLINE, x - (8), y - (10), 0, 0, 16, 21, 16, 21);
                     }
 
@@ -196,16 +191,5 @@ public class TemperatureHudOverlay implements HudRenderCallback {
             }
 
         }
-    }
-
-    private void renderOverlay(DrawContext context, Identifier texture, float opacity, int width, int height, float r, float g, float b) {
-        RenderSystem.disableDepthTest();
-        RenderSystem.depthMask(false);
-        RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SrcFactor.ONE, GlStateManager.DstFactor.ZERO);
-        context.setShaderColor(r, g, b, opacity);
-        context.drawTexture(texture, 0, 0, -90, 0.0f, 0.0f, width, height, width, height);
-        RenderSystem.depthMask(false);
-        RenderSystem.enableDepthTest();
-        context.setShaderColor(1.0f, 1.0f, 1.0f, opacity);
     }
 }

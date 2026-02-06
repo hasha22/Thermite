@@ -35,7 +35,7 @@ public class ThermConfig extends Config
 
     //Update - added boolean option to enable/disable temperature debug.
     @ConfigEntry(comment = "Variable to enable/disable debug log. Set to true to enable. Default false.")
-    public boolean enableTemperatureDebug = false;
+    public boolean enableTemperatureDebug = true;
 
     @ConfigEntry(comment = "X coordinate of temperature UI relative to its default position. (Default: 0)")
     public int temperatureXPos = 0;
