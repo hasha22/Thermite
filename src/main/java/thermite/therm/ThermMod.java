@@ -2,41 +2,25 @@ package thermite.therm;
 
 import me.lortseam.completeconfig.data.ConfigOptions;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thermite.therm.block.ThermBlocks;
 import thermite.therm.block.entity.FireplaceBlockEntity;
 import thermite.therm.effect.ThermStatusEffects;
 import thermite.therm.item.*;
-import thermite.therm.networking.ThermNetworkingPackets;
+import thermite.therm.networking.ThermNetworkingServer;
 import thermite.therm.recipe.LeatherArmorWoolRecipe;
-
-import java.util.Objects;
-import java.util.Random;
-import java.util.concurrent.ExecutionException;
-
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
 
 //TODO: Add default values to persistent states.
 //TODO: PURIFY main temperature ticking.
@@ -119,7 +103,7 @@ public class ThermMod implements ModInitializer {
 			content.add(WOOL_CLOTH_ITEM);
 		});
 
-		ThermNetworkingPackets.registerC2SPackets();
+        ThermNetworkingServer.registerC2SPackets();
 
 		//events
 		EventListeners.register();

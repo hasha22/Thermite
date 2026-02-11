@@ -23,7 +23,7 @@ import net.minecraft.world.dimension.DimensionType;
 import thermite.therm.block.FireplaceBlock;
 import thermite.therm.block.ThermBlocks;
 import thermite.therm.effect.ThermStatusEffects;
-import thermite.therm.networking.ThermNetworkingPackets;
+import thermite.therm.networking.ThermNetworkingClient;
 
 import java.util.Objects;
 import java.util.Random;
@@ -471,7 +471,7 @@ public class EventListeners {
 
         ServerPlayNetworking.send(
                 player,
-                ThermNetworkingPackets.SEND_THERMPLAYERSTATE_S2C_PACKET_ID,
+                ThermNetworkingClient.SEND_THERMPLAYERSTATE_S2C_PACKET_ID,
                 buf
         );
     }

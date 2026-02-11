@@ -17,7 +17,6 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import thermite.therm.ThermMod;
 import thermite.therm.effect.ThermStatusEffects;
-import thermite.therm.networking.ThermNetworkingPackets;
 
 public class IceJuiceItem extends Item {
 
