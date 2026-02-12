@@ -118,7 +118,7 @@ public class ServerState extends PersistentState {
         ServerState serverState = persistentStateManager.getOrCreate(
                 ServerState::createFromNbt,
                 ServerState::new,
-                ThermMod.modid);
+                ThermMod.modID);
 
         return serverState;
     }

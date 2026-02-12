@@ -1,13 +1,8 @@
 package thermite.therm.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.gui.hud.InGameOverlayRenderer;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import thermite.therm.ThermClient;
@@ -17,29 +12,29 @@ import java.util.Objects;
 
 public class TemperatureHudOverlay implements HudRenderCallback {
 
-    private static final Identifier THERMOMETER_FRAME = new Identifier(ThermMod.modid, "textures/thermometer/thermometer_frame.png");
-    private static final Identifier THERMOMETER_GAUGE = new Identifier(ThermMod.modid, "textures/thermometer/thermometer_gauge_fix_1.png");
-    private static final Identifier THERMOMETER_HAND = new Identifier(ThermMod.modid, "textures/thermometer/thermometer_hand.png");
-    private static final Identifier THERMOMETER_SNOWFLAKE = new Identifier(ThermMod.modid, "textures/thermometer/snowflake_icon_8x8.png");
-    private static final Identifier THERMOMETER_FLAME = new Identifier(ThermMod.modid, "textures/thermometer/flame_icon_8x8.png");
-    private static final Identifier THERMOMETER_STILL = new Identifier(ThermMod.modid, "textures/thermometer/temperate_icon.png");
+    private static final Identifier THERMOMETER_FRAME = new Identifier(ThermMod.modID, "textures/thermometer/thermometer_frame.png");
+    private static final Identifier THERMOMETER_GAUGE = new Identifier(ThermMod.modID, "textures/thermometer/thermometer_gauge_fix_1.png");
+    private static final Identifier THERMOMETER_HAND = new Identifier(ThermMod.modID, "textures/thermometer/thermometer_hand.png");
+    private static final Identifier THERMOMETER_SNOWFLAKE = new Identifier(ThermMod.modID, "textures/thermometer/snowflake_icon_8x8.png");
+    private static final Identifier THERMOMETER_FLAME = new Identifier(ThermMod.modID, "textures/thermometer/flame_icon_8x8.png");
+    private static final Identifier THERMOMETER_STILL = new Identifier(ThermMod.modID, "textures/thermometer/temperate_icon.png");
 
-    private static final Identifier THERMOMETER_DISPLAY = new Identifier(ThermMod.modid, "textures/thermometer/thermometer_display.png");
+    private static final Identifier THERMOMETER_DISPLAY = new Identifier(ThermMod.modID, "textures/thermometer/thermometer_display.png");
 
     //glass thermometer
-    private static final Identifier TEMPERATE_GLASS = new Identifier(ThermMod.modid, "textures/glass_thermometer/temperate_glass.png");
-    private static final Identifier COLD_GLASS = new Identifier(ThermMod.modid, "textures/glass_thermometer/cold_glass.png");
-    private static final Identifier FROZEN_GLASS = new Identifier(ThermMod.modid, "textures/glass_thermometer/frozen_glass.png");
-    private static final Identifier HOT_GLASS = new Identifier(ThermMod.modid, "textures/glass_thermometer/hot_glass.png");
-    private static final Identifier BLAZING_GLASS = new Identifier(ThermMod.modid, "textures/glass_thermometer/blazing_glass.png");
+    private static final Identifier TEMPERATE_GLASS = new Identifier(ThermMod.modID, "textures/glass_thermometer/temperate_glass.png");
+    private static final Identifier COLD_GLASS = new Identifier(ThermMod.modID, "textures/glass_thermometer/cold_glass.png");
+    private static final Identifier FROZEN_GLASS = new Identifier(ThermMod.modID, "textures/glass_thermometer/frozen_glass.png");
+    private static final Identifier HOT_GLASS = new Identifier(ThermMod.modID, "textures/glass_thermometer/hot_glass.png");
+    private static final Identifier BLAZING_GLASS = new Identifier(ThermMod.modID, "textures/glass_thermometer/blazing_glass.png");
 
-    private static final Identifier COOLING_OUTLINE = new Identifier(ThermMod.modid, "textures/glass_thermometer/cooling_outline.png");
-    private static final Identifier COOLING_OUTLINE_SMALL = new Identifier(ThermMod.modid, "textures/glass_thermometer/cooling_small_outline.png");
-    private static final Identifier HEATING_OUTLINE = new Identifier(ThermMod.modid, "textures/glass_thermometer/heating_outline.png");
-    private static final Identifier HEATING_OUTLINE_SMALL = new Identifier(ThermMod.modid, "textures/glass_thermometer/heating_small_outline.png");
+    private static final Identifier COOLING_OUTLINE = new Identifier(ThermMod.modID, "textures/glass_thermometer/cooling_outline.png");
+    private static final Identifier COOLING_OUTLINE_SMALL = new Identifier(ThermMod.modID, "textures/glass_thermometer/cooling_small_outline.png");
+    private static final Identifier HEATING_OUTLINE = new Identifier(ThermMod.modID, "textures/glass_thermometer/heating_outline.png");
+    private static final Identifier HEATING_OUTLINE_SMALL = new Identifier(ThermMod.modID, "textures/glass_thermometer/heating_small_outline.png");
 
-    public static final Identifier TEMPERATURE_EXTREME_OVERLAY = new Identifier(ThermMod.modid, "textures/misc/temp_extreme_1.png");
-    public static final Identifier TEMPERATURE_EXTREME_OVERLAY2 = new Identifier(ThermMod.modid, "textures/misc/temp_extreme_2.png");
+    public static final Identifier TEMPERATURE_EXTREME_OVERLAY = new Identifier(ThermMod.modID, "textures/misc/temp_extreme_1.png");
+    public static final Identifier TEMPERATURE_EXTREME_OVERLAY2 = new Identifier(ThermMod.modID, "textures/misc/temp_extreme_2.png");
 
     @Override
     public void onHudRender(DrawContext drawContext, float tickDelta) {

@@ -169,7 +169,7 @@ public class ThermConfig extends Config
     public int windRayLength = 32;
 
     public ThermConfig() {
-        super(ConfigOptions.mod(ThermMod.modid));
+        super(ConfigOptions.mod(ThermMod.modID));
     }
 
 }

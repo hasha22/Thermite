@@ -19,16 +19,14 @@ import thermite.therm.block.ThermBlocks;
 import thermite.therm.block.entity.FireplaceBlockEntity;
 import thermite.therm.effect.ThermStatusEffects;
 import thermite.therm.item.*;
+import thermite.therm.networking.ThermNetworkingPackets;
 import thermite.therm.networking.ThermNetworkingServer;
 import thermite.therm.recipe.LeatherArmorWoolRecipe;
 
-//TODO: Add default values to persistent states.
-//TODO: PURIFY main temperature ticking.
-//TODO: Biome climate overrider in config.
-
-public class ThermMod implements ModInitializer {
+public class ThermMod implements ModInitializer
+{
     public static final Logger LOGGER = LoggerFactory.getLogger("therm");
-	public static final String modid = "therm";
+	public static final String modID = "therm";
 	public static final String modVersion = "5.0.0.3";
 
 	//items
@@ -45,10 +43,9 @@ public class ThermMod implements ModInitializer {
 	public static final BlockItem FIREPLACE_ITEM = new BlockItem(ThermBlocks.FIREPLACE_BLOCK, new FabricItemSettings());
 
 	//block entities
-	//public static final BlockEntityType<FireplaceBlockEntity> FIREPLACE_BLOCK_ENTITY = null;
 	public static final BlockEntityType<FireplaceBlockEntity> FIREPLACE_BLOCK_ENTITY = Registry.register(
 			Registries.BLOCK_ENTITY_TYPE,
-			new Identifier(modid, "fireplace_block_entity"),
+			new Identifier(modID, "fireplace_block_entity"),
 			FabricBlockEntityTypeBuilder.create(FireplaceBlockEntity::new, ThermBlocks.FIREPLACE_BLOCK).build()
 	);
 
@@ -59,33 +56,35 @@ public class ThermMod implements ModInitializer {
 	public static final ThermConfig config = new ThermConfig();
 
 	@Override
-	public void onInitialize() {
-
+	public void onInitialize()
+    {
 		config.load();
-		ConfigOptions.mod(modid).branch(new String[]{"branch", "config"});
+		ConfigOptions.mod(modID).branch(new String[]{"branch", "config"});
+
+
 
 		//status effects
-		Registry.register(Registries.STATUS_EFFECT, new Identifier(modid, "cooling"), ThermStatusEffects.COOLING);
+		Registry.register(Registries.STATUS_EFFECT, new Identifier(modID, "cooling"), ThermStatusEffects.COOLING);
 
 		//items
-		Registry.register(Registries.ITEM, new Identifier(modid, "gold_sweet_berries"), GOLD_SWEET_BERRIES_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "ice_juice"), ICE_JUICE_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "thermometer"), THERMOMETER_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "wool_cloth"), WOOL_CLOTH_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "tester_item"), TESTER_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "gold_sweet_berries"), GOLD_SWEET_BERRIES_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "ice_juice"), ICE_JUICE_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "thermometer"), THERMOMETER_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "wool_cloth"), WOOL_CLOTH_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "tester_item"), TESTER_ITEM);
 
 		//blocks
-		Registry.register(Registries.BLOCK, new Identifier(modid, "ice_box_empty"), ThermBlocks.ICE_BOX_EMPTY_BLOCK);
-		Registry.register(Registries.BLOCK, new Identifier(modid, "ice_box_freezing"), ThermBlocks.ICE_BOX_FREEZING_BLOCK);
-		Registry.register(Registries.BLOCK, new Identifier(modid, "ice_box_frozen"), ThermBlocks.ICE_BOX_FROZEN_BLOCK);
-		Registry.register(Registries.BLOCK, new Identifier(modid, "fireplace"), ThermBlocks.FIREPLACE_BLOCK);
-		Registry.register(Registries.BLOCK, new Identifier(modid, "smoke"), ThermBlocks.SMOKE_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(modID, "ice_box_empty"), ThermBlocks.ICE_BOX_EMPTY_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(modID, "ice_box_freezing"), ThermBlocks.ICE_BOX_FREEZING_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(modID, "ice_box_frozen"), ThermBlocks.ICE_BOX_FROZEN_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(modID, "fireplace"), ThermBlocks.FIREPLACE_BLOCK);
+		Registry.register(Registries.BLOCK, new Identifier(modID, "smoke"), ThermBlocks.SMOKE_BLOCK);
 
 		//block item registry
-		Registry.register(Registries.ITEM, new Identifier(modid, "ice_box_empty_item"), ICE_BOX_EMPTY_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "ice_box_freezing_item"), ICE_BOX_FREEZING_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "ice_box_frozen_item"), ICE_BOX_FROZEN_ITEM);
-		Registry.register(Registries.ITEM, new Identifier(modid, "fireplace_item"), FIREPLACE_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "ice_box_empty_item"), ICE_BOX_EMPTY_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "ice_box_freezing_item"), ICE_BOX_FREEZING_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "ice_box_frozen_item"), ICE_BOX_FROZEN_ITEM);
+		Registry.register(Registries.ITEM, new Identifier(modID, "fireplace_item"), FIREPLACE_ITEM);
 
 		//item groups
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.FOOD_AND_DRINK).register(content -> {
@@ -104,6 +103,7 @@ public class ThermMod implements ModInitializer {
 		});
 
         ThermNetworkingServer.registerC2SPackets();
+        ThermNetworkingServer.registerVersionHandshake();
 
 		//events
 		EventListeners.register();

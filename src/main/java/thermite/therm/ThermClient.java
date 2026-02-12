@@ -40,7 +40,8 @@ public class ThermClient implements ClientModInitializer {
     public static boolean glassShakeAxis = false;
 
     @Override
-    public void onInitializeClient() {
+    public void onInitializeClient()
+    {
 
         showGuiKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Toggle Temperature Gui",
@@ -51,6 +52,7 @@ public class ThermClient implements ClientModInitializer {
 
 
         ThermNetworkingClient.registerS2CPackets();
+        ThermNetworkingClient.registerVersionHandshake();
 
         //hud
         HudRenderCallback.EVENT.register(new TemperatureHudOverlay());
