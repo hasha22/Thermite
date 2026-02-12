@@ -14,6 +14,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -317,18 +318,15 @@ public class EventListeners {
         if (playerState.searchFireplaceTick <= 0)
         {
             playerState.searchFireplaceTick = 20;
-            AtomicInteger fireplaces = new AtomicInteger();
-            Stream<BlockState> fireplaceBox = player.getWorld().getStatesInBox(Box.of(pos, 80, 80, 80));
-            fireplaceBox.forEach((state) -> {
-                if (state.isOf(ThermBlocks.FIREPLACE_BLOCK))
-                {
-                    if (state.get(FireplaceBlock.LIT))
-                    {
-                        fireplaces.addAndGet(1);
-                    }
-                }
-            });
-            playerState.fireplaces = fireplaces.get();
+            int fireplaces = 0;
+
+            for (BlockPos fireplacePos : serverState.getActiveFireplaces())
+            {
+                if (fireplacePos.isWithinDistance(player.getBlockPos(), 80))
+                    fireplaces++;
+            }
+
+            playerState.fireplaces = fireplaces;
 
             // this runs in console, can be kept enabled at all times
             ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -23,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import thermite.therm.ServerState;
 import thermite.therm.ThermMod;
 import thermite.therm.block.entity.FireplaceBlockEntity;
 
@@ -33,7 +35,8 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
     public static final BooleanProperty LIT = BooleanProperty.of("lit");
     public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
-    public FireplaceBlock(Settings settings) {
+    public FireplaceBlock(Settings settings)
+    {
         super(settings);
         setDefaultState(getDefaultState().with(LIT, false).with(FACING, Direction.NORTH));
     }
@@ -66,17 +69,6 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
             stack.setCount(stack.getCount() - 1);
             world.playSound(null, pos, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 0.25f, 0.5f);
         }
-        /* UPDATE - Removed coal blocks from being used as fuel
-        else if (stack.getItem() == Items.COAL_BLOCK)
-        {
-            world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
-            FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
-            blockEntity.setTime(blockEntity.getTime() + 10800);
-            blockEntity.markDirty();
-            stack.setCount(stack.getCount() - 1);
-            world.playSound(null, pos, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 0.25f, 0.5f);
-        }
-        */
         else if (stack.getItem() == Items.STICK) {
             world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
@@ -88,10 +80,37 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
 
         return super.onUse(state, world, pos, player, hand, hit);
     }
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved)
+    {
+        if (!world.isClient)
+        {
+            if (state.getBlock() != newState.getBlock())
+            {
+                ServerState serverState = ServerState.getServerState((MinecraftServer) world.getServer());
+                serverState.removeFireplace(pos);
+            }
+        }
+        super.onStateReplaced(state, world, pos, newState, moved);
+    }
+    @Override
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify)
+    {
+        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
+
+        if (!world.isClient) {
+            ServerState serverState = ServerState.getServerState(world.getServer());
+
+            if (state.get(FireplaceBlock.LIT)) {
+                serverState.addFireplace(pos);
+            } else {
+                serverState.removeFireplace(pos);
+            }
+        }
+    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
-        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
         return BlockRenderType.MODEL;
     }
 
