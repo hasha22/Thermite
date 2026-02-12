@@ -62,6 +62,7 @@ public class EventListeners {
 
         ServerTickEvents.END_SERVER_TICK.register((server) ->
         {
+            long tickStart = System.nanoTime();
             ServerState serverState = ServerState.getServerState(server);
 
             if (serverState.windRandomizeTick >= 24000)
@@ -88,6 +89,22 @@ public class EventListeners {
                     temperatureTick(server, player);
                 }
             });
+
+            long tickEnd = System.nanoTime();
+            serverState.tempTickTime += (tickEnd - tickStart);
+            serverState.tempTickCount++;
+
+            if(ThermMod.config.enablePerformanceDebug)
+            {
+                if (server.getTicks() % 200 == 0)
+                {
+                    double avg = ((double) serverState.tempTickTime / serverState.tempTickCount) / 1_000_000.0;
+                    ThermMod.LOGGER.info("Average Temp System cost: " + avg + " ms per tick");
+
+                    serverState.tempTickTime = 0;
+                    serverState.tempTickCount = 0;
+                }
+            }
         });
     }
     //UPDATE - Removed Player C2S Temperature Tick Packet, moved logic to where it should be
@@ -95,6 +112,8 @@ public class EventListeners {
     {
         ServerState serverState = ServerState.getServerState(server);
         ThermPlayerState playerState = ServerState.getPlayerState(player);
+
+        long startTotal = System.nanoTime();
 
         tempTickCounter++;
         if (tempTickCounter < ThermMod.config.tempTickCount)
@@ -293,6 +312,8 @@ public class EventListeners {
         }
 
         //wind and fireplaces
+        long startFire = System.nanoTime();
+
         if (playerState.searchFireplaceTick <= 0)
         {
             playerState.searchFireplaceTick = 20;
@@ -315,6 +336,11 @@ public class EventListeners {
                     + " temp=" + playerState.temp
                     + " windTemp=" + playerState.windTemp);
 
+            long endFire = System.nanoTime();
+            if (ThermMod.config.enablePerformanceDebug)
+            {
+                ThermMod.LOGGER.info("Fireplace section: " + ((endFire - startFire)/1_000_000.0) + " ms");
+            }
             //wind
             if (ThermMod.config.enableWind) {
                 if (ThermMod.config.multidimensionalWind || dim.natural()) {
@@ -458,6 +484,14 @@ public class EventListeners {
         }
         serverState.markDirty();
         sentTemperatureSync(player, playerState, serverState, tempDir);
+
+        long endTotal = System.nanoTime();
+
+        if (ThermMod.config.enablePerformanceDebug)
+        {
+            long duration = endTotal - startTotal;
+            ThermMod.LOGGER.info("TempTick took " + (duration / 1_000_000.0) + " ms");
+        }
 
     }
     private static void sentTemperatureSync(ServerPlayerEntity player, ThermPlayerState state, ServerState serverState, short dir)

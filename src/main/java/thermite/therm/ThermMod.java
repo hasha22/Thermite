@@ -61,8 +61,6 @@ public class ThermMod implements ModInitializer
 		config.load();
 		ConfigOptions.mod(modID).branch(new String[]{"branch", "config"});
 
-
-
 		//status effects
 		Registry.register(Registries.STATUS_EFFECT, new Identifier(modID, "cooling"), ThermStatusEffects.COOLING);
 

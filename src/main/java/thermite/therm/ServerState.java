@@ -3,11 +3,14 @@ package thermite.therm;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class ServerState extends PersistentState {
@@ -18,6 +21,7 @@ public class ServerState extends PersistentState {
     public int seasonTick = 0;
     public long currentSeasonTick = 0;
     public int seasonalWeatherTick = 0;
+    private final Set<BlockPos> activeFireplaces = new HashSet<>();
 
     public double windPitch = 360*Math.PI/180;
     public double windYaw = 0;
@@ -25,6 +29,9 @@ public class ServerState extends PersistentState {
     public double windTempModifierRange = 8;
     public double windTempModifier = 0;
     public double precipitationWindModifier = 0;
+
+    public long tempTickTime = 0;
+    public long tempTickCount = 0;
 
     public HashMap<UUID, ThermPlayerState> players = new HashMap<>();
 
@@ -129,5 +136,19 @@ public class ServerState extends PersistentState {
         ThermPlayerState playerState = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new ThermPlayerState());
 
         return playerState;
+    }
+    public Set<BlockPos> getActiveFireplaces()
+    {
+        return activeFireplaces;
+    }
+    public void addFireplace(BlockPos pos)
+    {
+        activeFireplaces.add(pos.toImmutable());
+        markDirty();
+    }
+    public void removeFireplace(BlockPos pos)
+    {
+        activeFireplaces.remove(pos);
+        markDirty();
     }
 }
