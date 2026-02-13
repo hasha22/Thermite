@@ -12,6 +12,8 @@ public class ThermConfig extends Config
     //UPDATE - Added variables to make certain temperature modifiers easily configurable.
     @ConfigEntry(comment = "Variable for adjusting fireplace heat. Default 14. Increasing it will make it hotter.")
     public int fireplaceTempModifier = 14;
+    @ConfigEntry(comment = "Variable for adjusting fireplace radius. Default is 40 blocks, but code checks < 40. Add +1 to desired value.")
+    public int fireplaceRadius = 41;
     @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the frigid climate. Increasing it will make it colder.")
     public float nightFrigidTempModifier = 12;
     @ConfigEntry(comment = "Variable for adjusting night temp modifier. This is for the cold climate. Increasing it will make it colder.")
@@ -39,7 +41,7 @@ public class ThermConfig extends Config
 
     //Update - added boolean option to enable/disable performance debug.
     @ConfigEntry(comment = "Variable to enable/disable performance debug. Set to true to enable. Default false.")
-    public boolean enablePerformanceDebug = true;
+    public boolean enablePerformanceDebug = false;
 
     @ConfigEntry(comment = "X coordinate of temperature UI relative to its default position. (Default: 0)")
     public int temperatureXPos = 0;

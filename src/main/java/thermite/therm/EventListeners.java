@@ -322,7 +322,7 @@ public class EventListeners {
 
             for (BlockPos fireplacePos : serverState.getActiveFireplaces())
             {
-                if (fireplacePos.isWithinDistance(player.getBlockPos(), 80))
+                if (fireplacePos.isWithinDistance(player.getBlockPos(), ThermMod.config.fireplaceRadius))
                     fireplaces++;
             }
 

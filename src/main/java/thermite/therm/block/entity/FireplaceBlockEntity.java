@@ -10,6 +10,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import thermite.therm.ServerState;
 import thermite.therm.ThermMod;
 import thermite.therm.block.FireplaceBlock;
 import thermite.therm.block.ThermBlocks;
@@ -18,6 +19,7 @@ public class FireplaceBlockEntity extends BlockEntity {
 
     private int number = 7;
     private int time = 0;
+    private boolean registered = false;
 
     public FireplaceBlockEntity(BlockPos pos, BlockState state) {
         super(ThermMod.FIREPLACE_BLOCK_ENTITY, pos, state);
@@ -61,13 +63,28 @@ public class FireplaceBlockEntity extends BlockEntity {
     }
 
     //tick
-    public static void tick(World world, BlockPos pos, BlockState state, FireplaceBlockEntity be) {
+    public static void tick(World world, BlockPos pos, BlockState state, FireplaceBlockEntity be)
+    {
+        if (!be.registered && state.get(FireplaceBlock.LIT))
+        {
+            if (!world.isClient)
+            {
+                ServerState serverState = ServerState.getServerState(world.getServer());
+                serverState.addFireplace(pos);
+            }
+            be.registered = true;
+        }
 
         if (world.getBlockState(pos).isOf(ThermBlocks.FIREPLACE_BLOCK)) {
             if (world.getBlockState(pos).get(FireplaceBlock.LIT)) {
                 if (be.time > 0) {be.time -= 1;}
-                if (be.time <= 0) {
+                if (be.time <= 0)
+                {
                     world.setBlockState(pos, ThermBlocks.FIREPLACE_BLOCK.getDefaultState().with(FireplaceBlock.LIT, false).with(FireplaceBlock.FACING, state.get(FireplaceBlock.FACING)));
+
+                    ServerState serverState = ServerState.getServerState(world.getServer());
+                    serverState.removeFireplace(pos);
+
                     world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
                 }
                 be.markDirty();

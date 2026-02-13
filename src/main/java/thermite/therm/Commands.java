@@ -48,37 +48,6 @@ public class Commands {
                             PlayerEntity player = EntityArgumentType.getPlayer(context, "player");
                             ThermPlayerState playerState = ServerState.getPlayerState(player);
 
-                            //LOGGER.info("" + player.getWorld().getBiome(player.getBlockPos()).isIn());
-
-							/*Random rand = new Random();
-							//serverState.windYaw = rand.nextDouble(0, 360)*Math.PI/180;
-							//serverState.windPitch = 360*Math.PI/180;
-
-							//double yaw = rand.nextDouble(0, 360)*Math.PI/180;
-							//double pitch = 360*Math.PI/180;
-
-							for (int i = 0; i < 32; i++) {
-
-								double turbulence = 20*Math.PI/180;
-								//yaw += rand.nextDouble(-turbulence, turbulence);
-								//pitch += rand.nextDouble(-turbulence, turbulence);
-
-								Vec3d dir = new Vec3d((Math.cos(serverState.windPitch+rand.nextDouble(-turbulence, turbulence)) * Math.cos(serverState.windYaw+rand.nextDouble(-turbulence, turbulence))), (Math.sin(serverState.windPitch+rand.nextDouble(-turbulence, turbulence)) * Math.cos(serverState.windYaw+rand.nextDouble(-turbulence, turbulence))), Math.sin(serverState.windYaw+rand.nextDouble(-turbulence, turbulence)));
-
-								Vec3d startPos = new Vec3d(player.getPos().x, player.getPos().y + 1, player.getPos().z);
-
-								BlockHitResult r = player.getWorld().raycast(new RaycastContext(startPos, startPos.add(dir.multiply(32)), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.WATER, player));
-
-								//context.getSource().sendMessage(Text.literal("" + rand.nextDouble(-turbulence, turbulence)*Math.PI/180));
-
-								if (!player.getWorld().getBlockState(r.getBlockPos()).isAir()) {
-									player.getWorld().setBlockState(r.getBlockPos(), Blocks.RED_CONCRETE.getDefaultState());
-								} else if (player.getWorld().getBlockState(r.getBlockPos()).isAir()) {
-									player.getWorld().setBlockState(r.getBlockPos(), Blocks.LIME_CONCRETE.getDefaultState());
-								}
-
-							}*/
-
                             return 1;
                         }))));
 

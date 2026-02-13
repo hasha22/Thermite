@@ -63,6 +63,13 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
 
         if (stack.getItem() == Items.COAL || stack.getItem() == Items.CHARCOAL) {
             world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
+
+            if (!world.isClient)
+            {
+                ServerState serverState = ServerState.getServerState(world.getServer());
+                serverState.addFireplace(pos);
+            }
+
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
             blockEntity.setTime(blockEntity.getTime() + 1200);
             blockEntity.markDirty();
@@ -71,6 +78,13 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
         }
         else if (stack.getItem() == Items.STICK) {
             world.setBlockState(pos, state.with(LIT, true).with(FACING, state.get(FACING)));
+
+            if (!world.isClient)
+            {
+                ServerState serverState = ServerState.getServerState(world.getServer());
+                serverState.addFireplace(pos);
+            }
+
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
             blockEntity.setTime(blockEntity.getTime() + 100);
             blockEntity.markDirty();
@@ -93,21 +107,6 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
         }
         super.onStateReplaced(state, world, pos, newState, moved);
     }
-    @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify)
-    {
-        super.neighborUpdate(state, world, pos, sourceBlock, sourcePos, notify);
-
-        if (!world.isClient) {
-            ServerState serverState = ServerState.getServerState(world.getServer());
-
-            if (state.get(FireplaceBlock.LIT)) {
-                serverState.addFireplace(pos);
-            } else {
-                serverState.removeFireplace(pos);
-            }
-        }
-    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
@@ -115,7 +114,8 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type)
+    {
         return FireplaceBlock.checkType(type, ThermMod.FIREPLACE_BLOCK_ENTITY, (world1, pos, state1, be) -> FireplaceBlockEntity.tick(world1, pos, state1, be));
     }
 
