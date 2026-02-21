@@ -8,10 +8,7 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ServerState extends PersistentState {
 
@@ -119,8 +116,8 @@ public class ServerState extends PersistentState {
     }
 
     public static ServerState getServerState(MinecraftServer server) {
-        PersistentStateManager persistentStateManager = server
-                .getWorld(World.OVERWORLD).getPersistentStateManager();
+        PersistentStateManager persistentStateManager = Objects.requireNonNull(server
+                .getWorld(World.OVERWORLD)).getPersistentStateManager();
 
         ServerState serverState = persistentStateManager.getOrCreate(
                 ServerState::createFromNbt,

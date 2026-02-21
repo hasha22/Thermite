@@ -420,11 +420,14 @@ public class EventListeners {
         });
         playerState.restingTemp += (playerState.fireplaces * ThermMod.config.fireplaceTempModifier);
 
-        if (Math.round(playerState.restingTemp) > Math.round(playerState.temp)) {
+        if (Math.round(playerState.restingTemp) > Math.round(playerState.temp))
+        {
             playerState.temp += 0.25;
-        } else if (Math.round(playerState.restingTemp) < Math.round(playerState.temp)) {
+        }
+        else if (Math.round(playerState.restingTemp) < Math.round(playerState.temp))
+        {
             playerState.temp -= 0.25;
-        } else if (Math.round(playerState.restingTemp) == Math.round(playerState.temp)) {}
+        }
 
         if (playerState.temp <= ThermMod.config.freezeThreshold1 && playerState.temp > ThermMod.config.freezeThreshold2) {
             playerState.damageType = "freeze";
