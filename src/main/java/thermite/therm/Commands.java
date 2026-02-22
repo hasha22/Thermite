@@ -29,10 +29,12 @@ public class Commands {
                             playerState.restingTemp = 404;
                             playerState.minTemp = -400;
                             playerState.maxTemp = 400;
+                            playerState.tempTickCounter = 0;
                             playerState.damageType = "";
                             playerState.damageTick = 0;
                             playerState.maxDamageTick = 10;
                             playerState.searchFireplaceTick = 4;
+                            playerState.fireplaces = 0;
                             serverState.markDirty();
 
                             context.getSource().sendMessage(Text.literal("Reset " + EntityArgumentType.getPlayer(context, "player").getName().getString() + "'s playerState."));

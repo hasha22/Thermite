@@ -33,7 +33,7 @@ public class ThermConfig extends Config
 
     //Update - added option to control how often temperature checks occur
     @ConfigEntry(comment = "Variable for controlling how often the mod checks for temperature. Measured in ticks. 20 ticks = 1 second. Default 20")
-    public int tempTickCount = 20;
+    public int tempTickCount = 10;
 
     //Update - added boolean option to enable/disable temperature debug.
     @ConfigEntry(comment = "Variable to enable/disable debug log. Set to true to enable. Default false.")

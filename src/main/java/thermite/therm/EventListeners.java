@@ -36,8 +36,6 @@ import static thermite.therm.ThermMod.modVersion;
 
 public class EventListeners {
 
-    public static int tempTickCounter = 0;
-
     public static void register() {
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
@@ -116,12 +114,13 @@ public class EventListeners {
 
         long startTotal = System.nanoTime();
 
-        tempTickCounter++;
-        if (tempTickCounter < ThermMod.config.tempTickCount)
+        playerState.tempTickCounter++;
+        if (playerState.tempTickCounter < ThermMod.config.tempTickCount)
         {
             return;
         }
-        tempTickCounter = 0;
+
+        playerState.tempTickCounter = 0;
 
         float temp = player.getWorld().getBiome(player.getBlockPos()).value().getTemperature();
         short tempDir = (short) (playerState.restingTemp - playerState.temp);
@@ -304,14 +303,6 @@ public class EventListeners {
         });
         playerState.restingTemp -= strongestCold[0].get();
 
-        if(ThermMod.config.enableTemperatureDebug)
-        {
-            player.sendMessage(Text.literal(
-                    "Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
-                    true
-            );
-        }
-
         //wind and fireplaces
         long startFire = System.nanoTime();
 
@@ -327,12 +318,6 @@ public class EventListeners {
             }
 
             playerState.fireplaces = fireplaces;
-
-            // this runs in console, can be kept enabled at all times
-            ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
-                    + " restingTemp=" + playerState.restingTemp
-                    + " temp=" + playerState.temp
-                    + " windTemp=" + playerState.windTemp);
 
             long endFire = System.nanoTime();
             if (ThermMod.config.enablePerformanceDebug)
@@ -414,19 +399,23 @@ public class EventListeners {
         }
 
         player.getStatusEffects().forEach((i) -> {
-            if (i.getTranslationKey().equals(ThermStatusEffects.COOLING.getTranslationKey())) {
+            if (i.getTranslationKey().equals(ThermStatusEffects.COOLING.getTranslationKey()))
+            {
                 playerState.restingTemp -= (10 + (10 * i.getAmplifier()));
             }
         });
         playerState.restingTemp += (playerState.fireplaces * ThermMod.config.fireplaceTempModifier);
 
-        if (Math.round(playerState.restingTemp) > Math.round(playerState.temp))
+        double diff = playerState.restingTemp - playerState.temp;
+        double maxStep = 0.25;
+
+        if (Math.abs(diff) <= maxStep)
         {
-            playerState.temp += 0.25;
+            playerState.temp = playerState.restingTemp;
         }
-        else if (Math.round(playerState.restingTemp) < Math.round(playerState.temp))
+        else
         {
-            playerState.temp -= 0.25;
+            playerState.temp += Math.signum(diff) * maxStep;
         }
 
         if (playerState.temp <= ThermMod.config.freezeThreshold1 && playerState.temp > ThermMod.config.freezeThreshold2) {
@@ -485,6 +474,20 @@ public class EventListeners {
         }
         serverState.markDirty();
         sentTemperatureSync(player, playerState, serverState, tempDir);
+
+        if(ThermMod.config.enableTemperatureDebug)
+        {
+            player.sendMessage(Text.literal(
+                            "Temp: " + playerState.temp + "  Resting: " + playerState.restingTemp),
+                    true
+            );
+        }
+
+        // this runs in console, can be kept enabled at all times
+        ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
+                + " restingTemp=" + playerState.restingTemp
+                + " temp=" + playerState.temp
+                + " windTemp=" + playerState.windTemp);
 
         long endTotal = System.nanoTime();
 
