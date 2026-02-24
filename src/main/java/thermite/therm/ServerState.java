@@ -128,7 +128,7 @@ public class ServerState extends PersistentState {
     }
 
     public static ThermPlayerState getPlayerState(LivingEntity player) {
-        ServerState serverState = getServerState(player.getWorld().getServer());
+        ServerState serverState = getServerState(Objects.requireNonNull(player.getWorld().getServer()));
 
         ThermPlayerState playerState = serverState.players.computeIfAbsent(player.getUuid(), uuid -> new ThermPlayerState());
 

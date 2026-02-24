@@ -411,11 +411,12 @@ public class EventListeners {
 
         if (Math.abs(diff) <= maxStep)
         {
-            playerState.temp = playerState.restingTemp;
+            playerState.temp = Math.round(playerState.restingTemp * 100) / 100;
         }
         else
         {
             playerState.temp += Math.signum(diff) * maxStep;
+            playerState.temp = Math.round(playerState.temp * 100.0) / 100.0;
         }
 
         if (playerState.temp <= ThermMod.config.freezeThreshold1 && playerState.temp > ThermMod.config.freezeThreshold2) {
