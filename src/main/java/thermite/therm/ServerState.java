@@ -136,7 +136,7 @@ public class ServerState extends PersistentState {
     }
     public Set<BlockPos> getActiveFireplaces()
     {
-        ThermMod.LOGGER.info("returning active fireplaces:" + activeFireplaces.size());
+        if(ThermMod.config.enableTemperatureDebug) {ThermMod.LOGGER.info("returning active fireplaces:" + activeFireplaces.size());}
         return activeFireplaces;
     }
     public void addFireplace(BlockPos pos)

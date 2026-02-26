@@ -75,7 +75,6 @@ public class EventListeners {
                 serverState.precipitationWindModifier = rand.nextDouble(-serverState.windTempModifierRange, 0);
 
                 serverState.markDirty();
-                ThermMod.LOGGER.info("========WIND RANDOMIZED========");
 
             }
             serverState.windRandomizeTick += 1;
@@ -484,11 +483,13 @@ public class EventListeners {
             );
         }
 
-        // this runs in console, can be kept enabled at all times
-        ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
-                + " restingTemp=" + playerState.restingTemp
-                + " temp=" + playerState.temp
-                + " windTemp=" + playerState.windTemp);
+        if(ThermMod.config.enableTemperatureDebug)
+        {
+            ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
+                    + " restingTemp=" + playerState.restingTemp
+                    + " temp=" + playerState.temp
+                    + " windTemp=" + playerState.windTemp);
+        }
 
         long endTotal = System.nanoTime();
 
