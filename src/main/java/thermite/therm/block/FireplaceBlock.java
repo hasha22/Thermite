@@ -71,7 +71,7 @@ public class FireplaceBlock extends BlockWithEntity implements BlockEntityProvid
             }
 
             FireplaceBlockEntity blockEntity = (FireplaceBlockEntity) world.getBlockEntity(pos);
-            blockEntity.setTime(blockEntity.getTime() + 1200);
+            blockEntity.setTime(blockEntity.getTime() + ThermMod.config.fireplaceCoalTickValue);
             blockEntity.markDirty();
             stack.setCount(stack.getCount() - 1);
             world.playSound(null, pos, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 0.25f, 0.5f);

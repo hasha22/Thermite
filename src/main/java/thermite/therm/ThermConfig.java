@@ -30,6 +30,8 @@ public class ThermConfig extends Config
     public int snowTempModifier = 8;
     @ConfigEntry(comment = "Variable for adjusting water modifier. Default 10. Increasing it will make it colder")
     public int waterTempModifier = 10;
+    @ConfigEntry(comment = "Variable for adjusting how long one piece of coal can keep the fireplace running. Measured in ticks. Default 600 (30 seconds).")
+    public int fireplaceCoalTickValue = 600;
 
     //Update - added option to control how often temperature checks occur
     @ConfigEntry(comment = "Variable for controlling how often the mod checks for temperature. Measured in ticks. 20 ticks = 1 second. Default 20")
