@@ -15,6 +15,8 @@ import thermite.therm.ThermMod;
 import thermite.therm.block.FireplaceBlock;
 import thermite.therm.block.ThermBlocks;
 
+import java.util.Objects;
+
 public class FireplaceBlockEntity extends BlockEntity {
 
     private int number = 7;
@@ -65,19 +67,18 @@ public class FireplaceBlockEntity extends BlockEntity {
     //tick
     public static void tick(World world, BlockPos pos, BlockState state, FireplaceBlockEntity be)
     {
+        if (world.isClient) return;
+
         if (!be.registered && state.get(FireplaceBlock.LIT))
         {
-            if (!world.isClient)
-            {
-                ServerState serverState = ServerState.getServerState(world.getServer());
-                serverState.addFireplace(pos);
-            }
+            ServerState serverState = ServerState.getServerState(Objects.requireNonNull(world.getServer()));
+            serverState.addFireplace(pos);
             be.registered = true;
         }
 
         if (world.getBlockState(pos).isOf(ThermBlocks.FIREPLACE_BLOCK)) {
             if (world.getBlockState(pos).get(FireplaceBlock.LIT)) {
-                if (be.time > 0) {be.time -= 1;}
+                if (be.time > 0) {be.time--;}
                 if (be.time <= 0)
                 {
                     world.setBlockState(pos, ThermBlocks.FIREPLACE_BLOCK.getDefaultState().with(FireplaceBlock.LIT, false).with(FireplaceBlock.FACING, state.get(FireplaceBlock.FACING)));

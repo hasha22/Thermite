@@ -115,7 +115,9 @@ public class ServerState extends PersistentState {
         return serverState;
     }
 
-    public static ServerState getServerState(MinecraftServer server) {
+    public static ServerState getServerState(MinecraftServer server)
+    {
+        if (server == null) return null;
         PersistentStateManager persistentStateManager = Objects.requireNonNull(server
                 .getWorld(World.OVERWORLD)).getPersistentStateManager();
 
