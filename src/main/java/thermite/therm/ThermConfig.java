@@ -43,7 +43,7 @@ public class ThermConfig extends Config
 
     //Update - added boolean option to enable/disable performance debug.
     @ConfigEntry(comment = "Variable to enable/disable performance debug. Set to true to enable. Default false.")
-    public boolean enablePerformanceDebug = true;
+    public boolean enablePerformanceDebug = false;
 
     @ConfigEntry(comment = "X coordinate of temperature UI relative to its default position. (Default: 0)")
     public int temperatureXPos = 0;
@@ -165,7 +165,7 @@ public class ThermConfig extends Config
     public int iceJuiceEffectDuration = 9600;
 
     @ConfigEntry(comment = "Disables or enables wind. (Default: true)")
-    public boolean enableWind = true;
+    public boolean enableWind = false;
 
     @ConfigEntry(comment = "If disabled, wind will only be applied in the overworld. (Default: false)")
     public boolean multidimensionalWind = false;

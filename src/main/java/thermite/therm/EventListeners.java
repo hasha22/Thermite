@@ -485,10 +485,13 @@ public class EventListeners {
 
         if(ThermMod.config.enableTemperatureDebug)
         {
+
             ThermMod.LOGGER.info("fireplaces=" + playerState.fireplaces
                     + " restingTemp=" + playerState.restingTemp
                     + " temp=" + playerState.temp
                     + " windTemp=" + playerState.windTemp);
+
+
         }
 
         long endTotal = System.nanoTime();

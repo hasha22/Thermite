@@ -82,7 +82,6 @@ public class FireplaceBlockEntity extends BlockEntity {
                 if (be.time <= 0)
                 {
                     world.setBlockState(pos, ThermBlocks.FIREPLACE_BLOCK.getDefaultState().with(FireplaceBlock.LIT, false).with(FireplaceBlock.FACING, state.get(FireplaceBlock.FACING)));
-
                     ServerState serverState = ServerState.getServerState(world.getServer());
                     serverState.removeFireplace(pos);
 
